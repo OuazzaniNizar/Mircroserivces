@@ -46,7 +46,7 @@ public class CompteBancaireRestController {
     }
 
     @GetMapping(value = "/{iban:[0-9]+}")
-    public ResponseEntity<?> recupererCompteParIban(@PathVariable("iban") Integer iban) {
+    public ResponseEntity<?> recupererCompteParIban(@PathVariable("iban") Long iban) {
         Optional<CompteBancaire> compte = repo.findById(iban);
         if (!compte.isPresent()) {
             return new ResponseEntity<>("Le compte ayant l'iban "+iban+" n'est pas présent dans la base.",HttpStatus.NOT_FOUND);
@@ -56,7 +56,7 @@ public class CompteBancaireRestController {
 
     @DeleteMapping("/{iban:[0-9]+}")
     @ResponseBody
-    public ResponseEntity<Object> supprimerCompteParIban(@PathVariable Integer iban){
+    public ResponseEntity<Object> supprimerCompteParIban(@PathVariable Long iban){
 
         Optional<CompteBancaire> compte = repo.findById(iban);
 
@@ -71,8 +71,12 @@ public class CompteBancaireRestController {
 
 
     @PostMapping("")
-    public ResponseEntity<Object> creerCompte(@RequestBody CompteBancaire compte) {
-        CompteBancaire nouveauCompte = repo.save(compte);
+    public ResponseEntity<Object> creerCompte(@RequestParam(value = "frais_tenue_compte", required = true) float frais_tenue_compte,
+                                              @RequestParam(value = "interet_compte", required = true)float interet_compte,
+                                              @RequestParam(value = "type_compte", required = true)String type_compte,
+                                              @RequestParam(value = "solde_initial", required = true)float solde_initial) {
+
+        CompteBancaire nouveauCompte = repo.save(new CompteBancaire(type_compte,frais_tenue_compte,solde_initial,interet_compte, new Date(),true));
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(nouveauCompte.getIban()).toUri();
@@ -83,7 +87,7 @@ public class CompteBancaireRestController {
     @PutMapping("/{iban:[0-9]+}")
     public ResponseEntity<Object> majCompteParIban(@RequestParam(value = "frais_tenue_compte", required = true) float frais_tenue_compte,
                                                    @RequestParam(value = "interet_compte", required = true)float interet_compte,
-                                                   @PathVariable("iban") Integer iban) {
+                                                   @PathVariable("iban") Long iban) {
 
         Optional<CompteBancaire> ancienCompte = repo.findById(iban);
 
@@ -100,7 +104,7 @@ public class CompteBancaireRestController {
 
 
     @PutMapping("/appliquer_interet/{iban:[0-9]+}")
-    public ResponseEntity<Object> appliquerInteret(@PathVariable("iban") Integer iban) {
+    public ResponseEntity<Object> appliquerInteret(@PathVariable("iban") Long iban) {
 
         Optional<CompteBancaire> compte = repo.findById(iban);
 
@@ -114,7 +118,7 @@ public class CompteBancaireRestController {
         Application application = eurekaClient.getApplication("gestion_transactions");
         InstanceInfo instanceInfo = application.getInstances().get(0);
         String url = "http://"+instanceInfo.getIPAddr()+ ":"+instanceInfo.getPort()+"/"+"transactions/";
-        HttpEntity<Transaction> request = new HttpEntity<>(new Transaction(HttpStatus.CREATED,0000,iban,"intérêt",compte.get().getSolde()*compte.get().getInteret_compte()));
+        HttpEntity<Transaction> request = new HttpEntity<>(new Transaction(HttpStatus.CREATED, (long) 0000,iban,"intérêt",compte.get().getSolde()*compte.get().getInteret_compte()));
         restTemplate.postForObject(url, request, Transaction.class);
 
         return new ResponseEntity<>(compte, HttpStatus.OK);
@@ -122,8 +126,8 @@ public class CompteBancaireRestController {
 
 
     @PutMapping("/operations/virement/")
-    public ResponseEntity<Object> virement(@RequestParam(value = "iban_emetteur", required = true) Integer iban_emetteur,
-                                           @RequestParam(value = "iban_recepteur", required = true)Integer iban_recepteur,
+    public ResponseEntity<Object> virement(@RequestParam(value = "iban_emetteur", required = true) Long iban_emetteur,
+                                           @RequestParam(value = "iban_recepteur", required = true)Long iban_recepteur,
                                            @RequestParam(value = "montant", required = true) float montant_transaction) {
 
         Optional<CompteBancaire> compteEmetteur = repo.findById(iban_emetteur);
@@ -154,7 +158,7 @@ public class CompteBancaireRestController {
 
 
     @PutMapping("/operations/depot_retrait/")
-    public ResponseEntity<Object> depot_retrait(@RequestParam("iban") Integer iban,
+    public ResponseEntity<Object> depot_retrait(@RequestParam("iban") Long iban,
                                         @RequestParam(value = "montant", required = true) float montant,
                                         @RequestParam(value = "type_opération", required = true) String type_opération) {
 
@@ -190,12 +194,12 @@ public class CompteBancaireRestController {
 
     @Data
     public class Transaction extends ResponseEntity<Transaction> {
-        private Integer emetteur;
-        private Integer recepteur;
+        private Long emetteur;
+        private Long recepteur;
         private String intitule;
         private float montant;
 
-        public Transaction(HttpStatus status, Integer emetteur, Integer recepteur, String intitule, float montant) {
+        public Transaction(HttpStatus status, Long emetteur, Long recepteur, String intitule, float montant) {
             super(status);
             this.emetteur = emetteur;
             this.recepteur = recepteur;

@@ -1,16 +1,15 @@
 package dauphine.fr.microservices.gestion_comptes.dauphine.fr.microservices.gestion_comptes;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 public class CompteBancaire {
 
 
-    @Id /*@GeneratedValue(strategy = GenerationType.AUTO)*/
+    @Id @GeneratedValue(strategy=GenerationType.AUTO)
     @Column(name="iban")
-    private Integer iban;
+    private Long iban;
 
     /*Compte bancaire courant
     Compte épargne, aussi appelé compte sur livret
@@ -30,7 +29,7 @@ public class CompteBancaire {
     private float interet_compte;
 
     @Column(name="date_creation_compte")
-    private String date_creation_compte;
+    private Date date_creation_compte;
 
     //actif - inactif
     @Column(name="etat_compte")
@@ -40,8 +39,7 @@ public class CompteBancaire {
     public CompteBancaire() {
     }
 
-    public CompteBancaire(Integer iban, String type_compte, float frais_tenue_compte, float solde, float interet_compte, String date_creation_compte, boolean etat_compte) {
-        this.iban = iban;
+    public CompteBancaire( String type_compte, float frais_tenue_compte, float solde, float interet_compte, Date date_creation_compte, boolean etat_compte) {
         this.type_compte = type_compte;
         this.frais_tenue_compte = frais_tenue_compte;
         this.solde=solde;
@@ -50,11 +48,11 @@ public class CompteBancaire {
         this.etat_compte = etat_compte;
     }
 
-    public Integer getIban() {
+    public Long getIban() {
         return iban;
     }
 
-    public void setIban(Integer iban) {
+    public void setIban(Long iban) {
         this.iban = iban;
     }
 
@@ -90,11 +88,11 @@ public class CompteBancaire {
         this.interet_compte = interet_compte;
     }
 
-    public String getDate_creation_compte() {
+    public Date getDate_creation_compte() {
         return date_creation_compte;
     }
 
-    public void setDate_creation_compte(String date_creation_compte) {
+    public void setDate_creation_compte(Date date_creation_compte) {
         this.date_creation_compte = date_creation_compte;
     }
 

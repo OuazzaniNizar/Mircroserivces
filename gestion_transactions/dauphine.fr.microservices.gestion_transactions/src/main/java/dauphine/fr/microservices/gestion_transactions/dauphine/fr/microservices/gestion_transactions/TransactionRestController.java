@@ -84,7 +84,7 @@ public class TransactionRestController {
 
 
     @GetMapping("/recherche/emetteur/{iban_emetteur:[0-9]+}")
-    public ResponseEntity<List<Transaction>> rechercherTransactionEmetteur(@PathVariable("iban_emetteur") Integer iban_emetteur) {
+    public ResponseEntity<List<Transaction>> rechercherTransactionEmetteur(@PathVariable("iban_emetteur") Long iban_emetteur) {
         List<Transaction> transactions= repo.rechercheTransctionEmetteur(iban_emetteur);
 
         if (transactions.isEmpty()) {
@@ -94,7 +94,7 @@ public class TransactionRestController {
     }
 
     @GetMapping("/recherche/recepteur/{iban_recepteur:[0-9]+}")
-    public ResponseEntity<List<Transaction>> rechercherTransactionRecepteur(@PathVariable("iban_recepteur") Integer iban_recepteur) {
+    public ResponseEntity<List<Transaction>> rechercherTransactionRecepteur(@PathVariable("iban_recepteur") Long iban_recepteur) {
         List<Transaction> transactions= repo.rechercheTransctionRecepteur(iban_recepteur);
 
         if (transactions.isEmpty()) {

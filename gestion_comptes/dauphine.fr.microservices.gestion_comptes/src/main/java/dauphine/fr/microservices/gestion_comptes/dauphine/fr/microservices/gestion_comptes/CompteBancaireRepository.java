@@ -6,5 +6,5 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.List;
 import java.util.Optional;
 
-interface CompteBancaireRepository extends JpaRepository<CompteBancaire, Integer> {
+interface CompteBancaireRepository extends JpaRepository<CompteBancaire, Long> {
 }

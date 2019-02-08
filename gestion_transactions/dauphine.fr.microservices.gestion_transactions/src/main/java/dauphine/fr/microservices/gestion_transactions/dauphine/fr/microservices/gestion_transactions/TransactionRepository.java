@@ -11,10 +11,10 @@ import java.util.List;
 public interface TransactionRepository extends JpaRepository<Transaction,Integer>{
 
     @Query("SELECT tr FROM Transaction tr WHERE tr.emetteur = :iban_emetteur")
-    List<Transaction> rechercheTransctionEmetteur(@Param("iban_emetteur") Integer iban);
+    List<Transaction> rechercheTransctionEmetteur(@Param("iban_emetteur") Long iban);
 
     @Query("SELECT tr FROM Transaction tr WHERE tr.recepteur = :iban_recepteur")
-    List<Transaction> rechercheTransctionRecepteur(@Param("iban_recepteur") Integer iban);
+    List<Transaction> rechercheTransctionRecepteur(@Param("iban_recepteur") Long iban);
 
 
 

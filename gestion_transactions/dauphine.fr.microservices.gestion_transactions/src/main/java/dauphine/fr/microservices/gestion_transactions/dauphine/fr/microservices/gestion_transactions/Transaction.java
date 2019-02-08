@@ -17,10 +17,10 @@ public class Transaction {
 
 
     @Column(name="emetteur")
-    private Integer emetteur;
+    private Long emetteur;
 
     @Column(name="recepteur")
-    private Integer recepteur;
+    private Long recepteur;
 
     @Column(name="intitule")
     private String intitule;
@@ -36,7 +36,7 @@ public class Transaction {
     }
 
 
-    public Transaction(Integer emetteur, Integer recepteur, String intitule, float montant) {
+    public Transaction(Long emetteur, Long recepteur, String intitule, float montant) {
         this.emetteur = emetteur;
         this.recepteur = recepteur;
         this.intitule = intitule;
@@ -51,19 +51,19 @@ public class Transaction {
         this.id = id;
     }
 
-    public Integer getEmetteur() {
+    public Long getEmetteur() {
         return emetteur;
     }
 
-    public void setEmetteur(Integer emetteur) {
+    public void setEmetteur(Long emetteur) {
         this.emetteur = emetteur;
     }
 
-    public Integer getRecepteur() {
+    public Long getRecepteur() {
         return recepteur;
     }
 
-    public void setRecepteur(Integer recepteur) {
+    public void setRecepteur(Long recepteur) {
         this.recepteur = recepteur;
     }
 
