@@ -1,13 +1,9 @@
 # Implémentation de l'architecture microservices en utilisant Java Spring Boot, Eureka, Swagger-ui et MySQL.
 
 Ce projet a pour objectif de mettre en oeuvre les différentes techniques enseignées dans le cadre du cours Architecture Microservices dispensé en MIAGE IF DAUPHINE.
-Auteurs :
-DJILANI Amira
-OUAZZANI CHAHDI Nizar
-
-## Getting Started
-
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+* Auteurs :
+* DJILANI Amira
+* OUAZZANI CHAHDI Nizar
 
 ### Prerequis
 
